@@ -1,16 +1,32 @@
 makeCacheMatrix <- function(x = matrix()){
-  ## Create a special matrix object that can cache its inverse
-  matrixInv <- NULL
+  ## Create a square ex: c(2,4), c(6,8)
+  ## Assign to a global variable by using <<
+  
+  
+  matrixInv <- NULL  ## Intialize to Null
+  
+  ## set the value of matrix
   set <- function(y){
     x <<- y
     matrixInv <<- NULL
   }
+  
+  ## get the value of matrix
   get <- function() x
+  
+  ## setinverse: set the value of the inverse of the matrix
   setinverse <- function(inverse) matrixInv <<- inverse
+  ## getinverse: set the value of the inverse of the matrix
   getinverse <- function() matrixInv
+  
+  ## create list of named arguments
   list(set=set, get=get, setinverse=setinverse, getinverse=getinverse)
 }
 
+
+## This function inverse's the the matrix for makeCacheMatrix function
+## First time it is called, this function computes and then stored ina global varaible 
+## Subsequent times, it retrieves from cache and returns with out computing. This faster and efficient 
 cacheSolve <- function(x, ...){
   ## Compute inverse of special matrix
   matrixInv <- x$getinverse()
@@ -23,3 +39,14 @@ cacheSolve <- function(x, ...){
   x$setinverse(matrixInv)
   matrixInv
 }
+
+## Steps to run the program
+## TO Combine arguments by rows
+x = rbind(c(2,4), c(6,8))
+m = makeCacheMatrix(x)
+m$get()
+## Call cacheSolve for the first time
+cacheSolve(m)
+
+## Once we call second time, value will be returned from chace as it is already set when called for the firest time
+cacheSolve(m)
